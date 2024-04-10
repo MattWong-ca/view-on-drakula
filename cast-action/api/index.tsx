@@ -39,12 +39,15 @@ app.hono.post("/drakula", async (c) => {
       },
     } = result.action;
 
-    let reply = `Hey @${interactorUsername}, view this on Drakula:\n\nhttps://drakula.app/user/${authorUsername}`;
+    let reply = `Hey @${interactorUsername}, view this on Drakula:\n`;
 
     await neynarClient.publishCast(
       process.env.SIGNER_UUID!,
       reply,
       {
+        embeds: [{
+          url: `https://drakula.app/user/${authorUsername}`
+        }],
         replyTo: hash,
       }
     );
