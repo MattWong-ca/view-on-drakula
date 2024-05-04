@@ -35,7 +35,7 @@ export const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   hub: neynarHub({ apiKey: NEYNAR_API_KEY }),
-  // browserLocation: ADD_URL,
+  browserLocation: ADD_URL,
 }).use(
   neynar({
     apiKey: NEYNAR_API_KEY,
@@ -43,13 +43,18 @@ export const app = new Frog({
   })
 );
 
-app.frame('/testing', (c) => {
+app.frame('/viewtest', (c) => {
+  const { buttonValue, inputText, status } = c;
+  const fid = c.var.interactor?.fid;
   return c.res({
     image: (
       <div
         style={{
           alignItems: 'center',
-          background: 'black',
+          background:
+            status === 'response'
+              ? 'linear-gradient(to right, #432889, #17101F)'
+              : 'black',
           backgroundSize: '100% 100%',
           display: 'flex',
           flexDirection: 'column',
@@ -72,14 +77,17 @@ app.frame('/testing', (c) => {
             whiteSpace: 'pre-wrap',
           }}
         >
-          {`Success! ✅`}
+          {status === 'response'
+            ? `Success! ✅`
+            : 'Welcome!\nTo connect to Readwise, enter your access token:'}
         </div>
       </div>
     ),
     intents: [
       <TextInput placeholder="Enter access token..." />,
-      <Button value="submit">Submit</Button>,
-      <Button.Reset>Back</Button.Reset>,
+      status === 'initial' && <Button.Link href="https://readwise.io/access_token">Get accesss token</Button.Link>,
+      status === 'initial' && <Button value="submit">Submit</Button>,
+      status === 'response' && <Button.Reset>Back</Button.Reset>,
     ],
   })
 })
