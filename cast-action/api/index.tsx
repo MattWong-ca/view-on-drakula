@@ -83,6 +83,38 @@ app.frame('/view', (c) => {
   })
 })
 
+app.frame("/v2", (c) => {
+  return c.res({
+    image: (
+      <div
+        style={{
+          alignItems: "center",
+          background: "black",
+          backgroundSize: "100% 100%",
+          height: "100%",
+          textAlign: "center",
+          width: "100%",
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontSize: 60,
+            padding: "0 120px",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          Add View on Drakula
+        </div>
+      </div>
+    ),
+    intents: [
+      <Button.AddCastAction action="/drakula2">Add</Button.AddCastAction>,
+    ],
+  });
+});
+
 app.castAction("/drakula2", async (c) => {
     const g = await getResult(c);
     return c.frame({ path: '/view' })
