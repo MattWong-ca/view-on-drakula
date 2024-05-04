@@ -145,7 +145,7 @@ app.frame('/testing2', (c) => {
 app.castAction("/drakula2", async (c) => {
     const g = await getResult(c);
     
-    return c.frame({ path: `https://drakula.app/user/${g}` });
+    return c.frame({ path: `/view` });
   },
   { name: "View on Drakula", icon: "link-external" }
 );
