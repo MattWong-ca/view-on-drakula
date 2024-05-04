@@ -51,7 +51,7 @@ app.castAction("/drakula2", async (c) => {
   { name: "View on Drakula", icon: "link-external" }
 );
 
-app.frame("/", (c) => {
+app.frame("/view", (c) => {
   return c.res({
     image: (
       <div
