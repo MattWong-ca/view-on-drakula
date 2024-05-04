@@ -44,17 +44,13 @@ export const app = new Frog({
 );
 
 app.frame('/view', (c) => {
-  const { buttonValue, inputText, status } = c;
-  const interactor = c.var.interactor;
+  const castAuthor = c.var.cast?.author.username;
   return c.res({
     image: (
       <div
         style={{
           alignItems: 'center',
-          background:
-            status === 'response'
-              ? 'linear-gradient(to right, #432889, #17101F)'
-              : 'black',
+          background: 'black',
           backgroundSize: '100% 100%',
           display: 'flex',
           flexDirection: 'column',
@@ -77,12 +73,12 @@ app.frame('/view', (c) => {
             whiteSpace: 'pre-wrap',
           }}
         >
-          View @${interactor?.username} on Drakula:
+          View @${castAuthor} on Drakula:
         </div>
       </div>
     ),
     intents: [
-      <Button.Link href={`https://drakula.app/user/${interactor?.username}`}>View @${interactor?.username!}</Button.Link>,
+      <Button.Link href={`https://drakula.app/user/${castAuthor}`}>View @${castAuthor!}</Button.Link>,
     ],
   })
 })
