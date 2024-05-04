@@ -1,4 +1,4 @@
-import { Button, Frog } from 'frog'
+import { Button, Frog, TextInput } from 'frog'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { NeynarAPIClient } from "@neynar/nodejs-sdk";
@@ -42,6 +42,50 @@ export const app = new Frog({
     features: ["interactor", "cast"],
   })
 );
+
+app.frame('/testing', (c) => {
+  return c.res({
+    image: (
+      <div
+        style={{
+          alignItems: 'center',
+          background:
+            status === 'response'
+              ? 'linear-gradient(to right, #432889, #17101F)'
+              : 'black',
+          backgroundSize: '100% 100%',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'nowrap',
+          height: '100%',
+          justifyContent: 'center',
+          textAlign: 'center',
+          width: '100%',
+        }}
+      >
+        <div
+          style={{
+            color: 'white',
+            fontSize: 60,
+            fontStyle: 'normal',
+            letterSpacing: '-0.025em',
+            lineHeight: 1.4,
+            marginTop: 30,
+            padding: '0 120px',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {`Success! ✅`}
+        </div>
+      </div>
+    ),
+    intents: [
+      <TextInput placeholder="Enter access token..." />,
+      <Button value="submit">Submit</Button>,
+      <Button.Reset>Back</Button.Reset>,
+    ],
+  })
+})
 
 app.castAction("/drakula2", async (c) => {
     const g = await getResult(c);
