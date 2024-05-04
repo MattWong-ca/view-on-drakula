@@ -73,7 +73,7 @@ app.frame('/view', (c) => {
             whiteSpace: 'pre-wrap',
           }}
         >
-          View @${castAuthor} on Drakula:
+          {`View @${castAuthor} on Drakula:`}
         </div>
       </div>
     ),
