@@ -78,7 +78,7 @@ app.frame('/view', (c) => {
       </div>
     ),
     intents: [
-      <Button.Link href={`https://drakula.app/user/${castAuthor}`}>View @${castAuthor!}</Button.Link>,
+      <Button.Link href={`https://drakula.app/user/${castAuthor}`}>View @{castAuthor!}</Button.Link>,
     ],
   })
 })
