@@ -1,4 +1,4 @@
-import { Frog } from 'frog'
+import { Button, Frog } from 'frog'
 import { devtools } from 'frog/dev'
 import { serveStatic } from 'frog/serve-static'
 import { NeynarAPIClient } from "@neynar/nodejs-sdk";
@@ -11,17 +11,77 @@ const neynarClient = new NeynarAPIClient(NEYNAR_API_KEY);
 const ADD_URL =
   "https://warpcast.com/~/add-cast-action?name=View+on+Drakula&icon=link-external&actionType=post&postUrl=https://drakula.vercel.app/";
 
+const getResult = async (c: any) => {
+  const {
+    trustedData: { messageBytes },
+  } = await c.req.json();
+
+  const result = await neynarClient.validateFrameAction(messageBytes);
+
+  if (result.valid) {
+    const {
+      interactor: { username: interactorUsername },
+      cast: {
+        author: { username: authorUsername },
+        hash
+      },
+    } = result.action;
+    return interactorUsername;
+  }
+  return null;
+}
+
 export const app = new Frog({
   assetsPath: "/",
   basePath: "/api",
   hub: neynarHub({ apiKey: NEYNAR_API_KEY }),
-  browserLocation: ADD_URL,
+  // browserLocation: ADD_URL,
 }).use(
   neynar({
     apiKey: NEYNAR_API_KEY,
     features: ["interactor", "cast"],
   })
 );
+
+app.castAction("/drakula2", async (c) => {
+    const g = await getResult(c);
+    
+    return c.frame({ path: `https://drakula.app/user/${g}` });
+  },
+  { name: "View on Drakula", icon: "link-external" }
+);
+
+app.frame("/", (c) => {
+  return c.res({
+    image: (
+      <div
+        style={{
+          alignItems: "center",
+          background: "black",
+          backgroundSize: "100% 100%",
+          height: "100%",
+          textAlign: "center",
+          width: "100%",
+          display: "flex",
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontSize: 60,
+            padding: "0 120px",
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          View on Drakula
+        </div>
+      </div>
+    ),
+    intents: [
+      <Button.AddCastAction action="/drakula2">Add</Button.AddCastAction>,
+    ],
+  });
+});
 
 app.hono.post("/drakula", async (c) => {
   const {
